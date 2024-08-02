@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket Example</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+        <link rel="stylesheet" href="/static/styles.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="box">
+                <h1 class="title">WebSocket Test</h1>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" type="text" id="messageInput" placeholder="Type a message...">
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="button is-primary" onclick="connectWebSocket()">Connect</button>
+                    <button class="button is-link" onclick="sendMessage()">Send Message</button>
+                </div>
+                <div id="messages" class="content"></div>
+            </div>
+        </div>
+        <script>
+            let websocket;
+
+            function connectWebSocket() {
+                websocket = new WebSocket("ws://localhost:8000/ws");
+
+                websocket.onmessage = function(event) {
+                    const messages = document.getElementById('messages');
+                    const message = document.createElement('div');
+                    message.textContent = 'Server: ' + event.data;
+                    message.classList.add('message');
+                    messages.appendChild(message);
+                };
+
+                websocket.onopen = function() {
+                    const messages = document.getElementById('messages');
+                    const message = document.createElement('div');
+                    message.textContent = 'Connected to server';
+                    message.classList.add('message');
+                    messages.appendChild(message);
+                };
+
+                websocket.onclose = function() {
+                    const messages = document.getElementById('messages');
+                    const message = document.createElement('div');
+                    message.textContent = 'Disconnected from server';
+                    message.classList.add('message');
+                    messages.appendChild(message);
+                };
+            }
+
+            function sendMessage() {
+                const input = document.getElementById('messageInput');
+                const message = input.value;
+                websocket.send(message);
+                const messages = document.getElementById('messages');
+                const messageElement = document.createElement('div');
+                messageElement.textContent = 'You: ' + message;
+                messageElement.classList.add('message');
+                messages.appendChild(messageElement);
+                input.value = '';
+            }
+        </script>
+    </body>
+</html>

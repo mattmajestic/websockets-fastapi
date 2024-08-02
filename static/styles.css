@@ -1,0 +1,25 @@
+html, body {
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.box {
+    width: 400px;
+    text-align: center;
+}
+
+#messages {
+    margin-top: 20px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.message {
+    margin-bottom: 10px;
+}
